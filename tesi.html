@@ -1,0 +1,315 @@
+<!DOCTYPE html>
+<html dir="ltr" lang="it-IT">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <!-- Document Meta-->
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <!-- IE Compatibility Meta-->
+    <meta name="author" content="zytheme">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <meta name="description" content="Multi-purpose Business html5 landing page">
+    <link href="https://img.icons8.com/?size=100&id=tspk45OeZpDS&format=png" rel="icon">
+    <!--  Fonts-->
+    <link href="./website_files/css" rel="stylesheet" type="text/css">
+    <!-- Stylesheets-->
+    <link href="./website_files/vendor.css" rel="stylesheet">
+    <link href="https://cdn.linearicons.com/free/1.0.0/icon-font.min.css" rel="stylesheet" >
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&family=Roboto:wght@400;500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link href="./website_files/style.css" rel="stylesheet">
+    <title>Bona | Tesi Risk Analysis</title>
+  </head>
+  <body class="body-scroll">
+    <!--  
+    Document Wrapper
+    =============================================  
+    -->
+    <div class="wrapper clearfix" id="wrapper">
+      <!--   
+      Header
+      =============================================  
+      -->
+      <section class="hero hero-2 bg-dark" id="hero">
+        <div class="hero-content bg-dark">
+          <div class="container">
+            <!-- Logo Section -->
+            <div class="row">
+              <div class="col-12 text-center">
+                <div class="hero-logo mt-50">
+                  <img src="./website_files/logo-light.png" alt="logo hero" style="width: 300px; height: auto;">
+                </div>
+              </div>
+            </div>
+            <!-- Hero Content -->
+            <div class="row row-content align-items-center mt-5">
+              <!-- Image Section -->
+              <div class="col-12 col-md-5 text-center">
+                <div class="hero-holder" style="margin-top: -80px;">
+                  <!-- Spostato più in alto -->
+                  <img class="img-fluid" src="./website_files/book.png" alt="screens" style="max-width: 90%; height: auto;">
+                </div>
+              </div>
+              <!-- Text Section -->
+              <div class="col-12 col-md-6">
+                <div class="hero-headline">Innovation for Security</div>
+                <div class="hero-subheadline" style="color: #49b970; font-size: 24px; font-weight: 500; margin-bottom: 20px;"> Scopri come migliorare la tua strategia di gestione del rischio </div>
+                <div class="hero-bio"> Con un approccio sistemico, affronta le sfide del Risk Assessment in modo innovativo ed efficace. </div>
+                <div class="hero-action">
+                  <a class="btn btn--primary btn--rounded" href="javascript:void(0);" onclick="openPopup()"> DOWNLOAD </a>
+                </div>
+              </div>
+              <!-- Popup e overlay -->
+              <div class="popup" id="popup">
+                <h3>Lascia il tuo Feedback</h3>
+                <div class="stars">
+                  <i class="fa fa-star" onclick="selectStar(this)"></i>
+                  <i class="fa fa-star" onclick="selectStar(this)"></i>
+                  <i class="fa fa-star" onclick="selectStar(this)"></i>
+                  <i class="fa fa-star" onclick="selectStar(this)"></i>
+                  <i class="fa fa-star" onclick="selectStar(this)"></i>
+                </div>
+                <br>
+                <br>
+                <input type="text" id="user-name" placeholder="Nome utente" />
+                <input type="text" id="user-role" placeholder="Ruolo" />
+                <textarea id="feedback-text" class="feedback-text" placeholder="Scrivi il tuo feedback..."></textarea>
+                <button class="submit-btn" onclick="submitFeedback()">Invia Feedback</button>
+                <button class="submit-btn" onclick="closePopup()">Chiudi</button>
+              </div>
+              <div class="popup-overlay" id="popup-overlay" onclick="closePopup()"></div>
+            </div>
+            <!-- End Row -->
+          </div>
+          <!-- End Container -->
+        </div>
+        <!-- End Hero Content -->
+      </section>
+      <div class="clearfix bg-white"></div>
+      <section class="feature feature-2 feature-left bg-white" id="feature3">
+        <div class="container">
+          <div class="row">
+            <div class="col-12 col-md-12 col-lg-5">
+              <div class="heading heading-1 mb-60 wow fadeInUp" data-wow-duration="1s" style="visibility: visible; animation-duration: 1s; animation-name: none;">
+                <h2 class="heading--title pt-20">What's Inside?</h2>
+                <p class="heading--desc pl-0">Il presente lavoro si inserisce in un contesto in cui le organizzazioni si trovano ad affrontare un panorama di rischi sempre più complesso ed interconnesso. </p>
+              </div>
+              <div class="feature-panel mb-50 wow fadeInUp" data-wow-duration="1s" style="visibility: visible; animation-duration: 1s; animation-name: none;">
+                <div class="feature--icon">
+                  <i class="lnr lnr-book"></i>
+                </div>
+                <div class="feature--content">
+                  <h3>Riferimenti normativi</h3>
+                  <p>La tesi si basa su un approfondito studio delle normative internazionali quali la serie delle norme ISO/IEC ed il framework NIST per definire i requisiti necessari alla valutazione del rischio. </p>
+                </div>
+              </div>
+              <!-- End .feature-panel  -->
+              <div class="feature-panel wow fadeInUp" data-wow-duration="1s" style="visibility: visible; animation-duration: 1s; animation-name: none;">
+                <div class="feature--icon">
+                  <i class="lnr lnr-rocket"></i>
+                </div>
+                <div class="feature--content">
+                  <h3>Esempi pratici</h3>
+                  <p>Gli esempi pratici illustrano due tipiche problematiche affrontate dalle aziende ICT italiane: <br>
+                    <br> 1- Attacchi ransomware che minacciano l'integrità operativa ed economica <br> 2- Violazioni del GDPR che impattano sulla reputazione aziendale e sul rispetto di severi obblighi legali
+                  </p>
+                </div>
+              </div>
+              <!-- End .feature-panel  -->
+            </div>
+            <!-- End .col-md-6-->
+            <div class="col-12 col-md-12 col-lg-7 wow fadeInUp" style="visibility: visible; animation-name: none;">
+              <img class="img-fluid center-block" src="./website_files/ipad.png" alt="ipad">
+            </div>
+            <!--  End .col-md-6 -->
+          </div>
+          <!-- End .row  -->
+        </div>
+        <!-- End .container  -->
+      </section>
+      <!-- End #feature2  -->
+      <!-- 
+      Banner 
+      =============================================  
+      -->
+      <section class="banner pt-0 pb-0" id="banner">
+        <div class="container-fluid">
+          <div class="row">
+            <div class="col-12 col-md-12 col-lg-6 pr-0 pl-0">
+              <!-- Left Column with Image -->
+              <div class="col-img" style="display: flex; justify-content: center; align-items: center; height: 100%; min-height: 400px; position: relative; margin-top: 70px;">
+                <img src="./website_files/fotoProfilo.jpeg" alt="Jack_Profilo" style="max-width: 100%; max-height: 100%; object-fit: contain; border-radius: 20%; width: 90%; height: auto;">
+              </div>
+            </div>
+            <!-- End .col-lg-6-->
+            <div class="col-12 col-md-12 col-lg-6 col-content pl-100">
+              <h3>Whoami</h3>
+              <p>Ciao 👋 <br>
+                <br> Mi chiamo Giacomo Bona e sono un grande appassionato di tecnologia. Sono cresciuto insieme a piattaforme come Eclipse, LinkedIn, MySpace e Wordpress. Solo qualche anno dopo, ho deciso di intraprendere un percorso di studi nel campo dell'informatica e delle telecomunicazioni. <br>
+                <br> Nel 2022 ho scoperto una vulnerabilità IDOR su un sito istituzionale, che consentiva l'accesso a documenti d'identità e altre informazioni sensibili dei clienti. <br> Questa esperienza mi ha spinto a dedicarmi con passione alla sicurezza informatica, in particolare all'informatica forense, con l'obiettivo di ricostruire eventi criminosi e fornire supporto in tutte le fasi di un processo legale. <br>
+                <br>Ho completato un percorso biennale in CyberDefence e attualmente lavoro in JAKALA nel team del CISO. <br>
+              </p>
+              <!-- Reduced the size of the signature -->
+              <img src="./website_files/signature.png" alt="signature" style="max-width: 120px; height: auto;">
+            </div>
+          </div>
+          <!-- End .row -->
+        </div>
+        <!-- End .container -->
+      </section>
+      <!-- End #banner2  -->
+      <!-- 
+      reviews 
+      ================================================  
+      -->
+      <section class="reviews bg-white" id="reviews">
+        <div class="container">
+          <div class="row clearfix">
+            <div class="col-12 col-md-8 offset-md-2 col-lg-6 offset-lg-3">
+              <div class="heading heading-1 mb-80 text--center wow fadeInUp" data-wow-duration="1s">
+                <h2 class="heading--title">Feedback</h2>
+              </div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-12 col-md-12 col-lg-12">
+              <div class="owl-carousel owl-loaded owl-drag" data-slide="2" data-slide-res="1" data-autoplay="true" data-nav="false" data-dots="false" data-space="30" data-loop="true" data-speed="800">
+                <div class="owl-stage-outer">
+                  <div class="owl-stage" id="reviews-container">
+                    <!-- Recensioni esistenti (demo) -->
+                    <div class="owl-item" style="width: 540px; margin-right: 30px;">
+                      <div class="testimonial-panel wow fadeInUp" data-wow-duration="1s" style="visibility: hidden; animation-duration: 1s; animation-name: none;">
+                        <div class="testimonial-body">
+                          <div class="testimonial--body">
+                            <p>“Qui l'utente potrà lasciare la recensione come richiesto per valutare accessibilità e UX/UI del website"
+                            <div class="testimonial--meta">
+                              <div class="testimonial--author">
+                                <img src="./website_files/1.png" alt="author">
+                                <h5>Luca Bona</h5>
+                                <p>web developer</p>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+      </section>
+      <!-- 
+      Footer #5
+      ============================================= 
+      -->
+      <footer class="footer footer-5" id="footer">
+        <!-- 
+        Copyrights
+        =============================================  
+        -->
+        <div class="container">
+          <div class="row">
+            <div class="col-12 col-md-12 col-lg-12 text--center">
+              <div class="footer--copyright">
+                <span>© 2024 - Made with ❤️ by </span>
+                <a href="https://www.bonagiacomo.com">Giacomo Bona</a>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!-- End .container  -->
+      </footer>
+    </div>
+    <!-- End #wrapper   -->
+    <!-- 
+    Footer Scripts
+    =============================================  
+    -->
+    <script src="./website_files/jquery-3.4.1.min.js.download"></script>
+    <script src="./website_files/vendor.js.download"></script>
+    <script src="./website_files/functions.js.download"></script>
+    <script>
+      // Funzione per aprire il popup
+      function openPopup() {
+        document.getElementById("popup").style.display = "block";
+        document.getElementById("popup-overlay").style.display = "block";
+      }
+      // Funzione per chiudere il popup
+      function closePopup() {
+        document.getElementById("popup").style.display = "none";
+        document.getElementById("popup-overlay").style.display = "none";
+      }
+      // Funzione per gestire la selezione delle stelle
+      function selectStar(star) {
+        const stars = document.querySelectorAll(".stars i");
+        let selected = false;
+        // Controlla se la stella è già selezionata
+        if (star.classList.contains("selected")) {
+          selected = true;
+          star.classList.remove("selected");
+        } else {
+          star.classList.add("selected");
+        }
+        // Se è stata deselezionata una stella, rimuovi la selezione dalle successive
+        if (!selected) {
+          for (let i = 0; i < stars.length; i++) {
+            if (stars[i] === star) {
+              break;
+            }
+            stars[i].classList.add("selected");
+          }
+        } else {
+          for (let i = stars.length - 1; i >= 0; i--) {
+            if (stars[i] === star) {
+              break;
+            }
+            stars[i].classList.remove("selected");
+          }
+        }
+      }
+      // Funzione per inviare il feedback
+      function submitFeedback() {
+        // Ottieni i valori dal popup
+        var name = document.getElementById("user-name").value;
+        var role = document.getElementById("user-role").value;
+        var feedbackText = document.getElementById("feedback-text").value;
+        // Controllo di validità (puoi anche aggiungere altri controlli qui)
+        if (!name || !role || !feedbackText) {
+          alert("Tutti i campi sono obbligatori!");
+          return;
+        }
+        // Crea il nuovo div della recensione
+        var newReview = document.createElement("div");
+        newReview.classList.add("owl-item");
+        // Aggiungi il contenuto della recensione
+        newReview.innerHTML = `
+    
+																																				<div class="testimonial-panel wow fadeInUp" data-wow-duration="1s" style="visibility: visible; animation-duration: 1s; animation-name: fadeInUp;">
+																																					<div class="testimonial-body">
+																																						<div class="testimonial--body">
+																																							<p>“${feedbackText}”</p>
+																																						</div>
+																																						<div class="testimonial--meta">
+																																							<div class="testimonial--author">
+																																								<img src="./website_files/1.png" alt="author">
+																																									<h5>${name}</h5>
+																																									<p>${role}</p>
+																																								</div>
+																																							</div>
+																																						</div>
+																																					</div>
+  `;
+        // Aggiungi la recensione nel contenitore delle recensioni
+        var reviewContainer = document.getElementById("reviews-container");
+        reviewContainer.appendChild(newReview);
+        // Pulisci i campi del popup
+        document.getElementById("user-name").value = "";
+        document.getElementById("user-role").value = "";
+        document.getElementById("feedback-text").value = "";
+        // Chiudi il popup
+        closePopup();
+        window.open('website_files/elaborato.pdf', '_blank');
+      }
+    </script>
+  </body>
+</html>
