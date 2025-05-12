@@ -107,7 +107,7 @@
   </style>
 </head>
 <body>
-  <h1><i class="fas fa-folder-open"></i> File Browser Tabellare</h1>
+  <h1><i class="fas fa-folder-open"></i> File Browser</h1>
   <input type="text" id="search" placeholder="🔍 Cerca file..." />
 
   <div class="filters">
@@ -137,20 +137,20 @@
   <script>
     let rawData = [];
 
-    document.getElementById('uploadCsv').addEventListener('change', function (e) {
-      const file = e.target.files[0];
-      if (!file) return;
-
-      Papa.parse(file, {
-        header: true,
-        skipEmptyLines: true,
-        complete: function (results) {
-          rawData = results.data;
-          populateFilters(rawData);
-          renderTable(rawData);
-        }
-      });
-    });
+    fetch('https://raw.githubusercontent.com/gabona-dev/website/refs/heads/main/esempio.csv')
+      .then(response => response.text())
+      .then(csvData => {
+        Papa.parse(csvData, {
+          header: true,
+          skipEmptyLines: true,
+          complete: function (results) {
+            rawData = results.data;
+            populateFilters(rawData);
+            renderTable(rawData);
+          }
+        });
+      })
+      .catch(error => console.error('Error loading the CSV file:', error));
 
     document.getElementById('search').addEventListener('input', filterAndRender);
     document.getElementById('filterAuthor').addEventListener('change', filterAndRender);
