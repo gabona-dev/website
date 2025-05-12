@@ -1,0 +1,295 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>JAKALA Recover</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+  <style>
+    body {
+      font-family: 'Inter', sans-serif;
+      margin: 0;
+      padding: 30px;
+      background-color: #f0f2f5;
+      color: #1c1c1e;
+    }
+    h1 {
+      font-size: 2rem;
+      margin-bottom: 1.5rem;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    #search {
+      width: 100%;
+      padding: 12px 16px;
+      margin: 20px 0;
+      border: 2px solid #007aff;
+      border-radius: 12px;
+      font-size: 1rem;
+      background-color: #fff;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    }
+    .filters {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      align-items: center;
+      margin-bottom: 20px;
+    }
+    select, button, input[type="file"] {
+      padding: 10px 14px;
+      font-size: 0.95rem;
+      border: 1px solid #d1d5db;
+      border-radius: 10px;
+      background-color: #fff;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+    select:hover, button:hover, input[type="file"]:hover {
+      border-color: #a0aec0;
+    }
+    button {
+      background-color: #007aff;
+      color: white;
+      font-weight: 600;
+    }
+    table {
+      width: 100%;
+      border-collapse: separate;
+      border-spacing: 0 8px;
+    }
+    th, td {
+      padding: 12px;
+      text-align: left;
+      background-color: #fff;
+    }
+    th {
+      font-weight: 600;
+      background-color: #f8f9fa;
+      border-bottom: 1px solid #e5e7eb;
+    }
+    td {
+      border-bottom: 1px solid #f1f1f1;
+    }
+    tr:hover td {
+      background-color: #f0f4ff;
+    }
+    input[type="checkbox"] {
+      transform: scale(1.2);
+    }
+    @media (max-width: 768px) {
+      table, thead, tbody, th, td, tr {
+        display: block;
+      }
+      thead tr {
+        display: none;
+      }
+      tr {
+        margin-bottom: 15px;
+        border: 1px solid #ddd;
+        border-radius: 10px;
+        padding: 10px;
+        background: #fff;
+      }
+      td {
+        display: flex;
+        justify-content: space-between;
+        padding: 8px 12px;
+        border: none;
+      }
+      td::before {
+        content: attr(data-label);
+        font-weight: bold;
+      }
+    }
+  </style>
+</head>
+<body>
+  <h1><i class="fas fa-folder-open"></i> File Browser Tabellare</h1>
+  <input type="text" id="search" placeholder="🔍 Cerca file..." />
+
+  <div class="filters">
+    <input type="file" id="uploadCsv" accept=".csv" />
+    <select id="filterAuthor"><option value="">Autore</option></select>
+    <select id="filterExtension"><option value="">Estensione</option></select>
+    <select id="filterDeleteDate"><option value="">Mese e Anno Eliminazione</option></select>
+    <button onclick="ripristino()"><i class="fa-solid fa-hammer"></i> Ripristina File</button>
+  </div>
+
+  <table id="fileTable">
+    <thead>
+      <tr>
+        <th><input type="checkbox" id="selectAll"></th>
+        <th>Autore</th>
+        <th>Title</th>
+        <th>Percorso</th>
+        <th>Estensione</th>
+        <th>Data Label</th>
+        <th>Data Cancellazione</th>
+      </tr>
+    </thead>
+    <tbody></tbody>
+  </table>
+
+  <script src="https://cdn.jsdelivr.net/npm/papaparse@5.4.1/papaparse.min.js"></script>
+  <script>
+    let rawData = [];
+
+    document.getElementById('uploadCsv').addEventListener('change', function (e) {
+      const file = e.target.files[0];
+      if (!file) return;
+
+      Papa.parse(file, {
+        header: true,
+        skipEmptyLines: true,
+        complete: function (results) {
+          rawData = results.data;
+          populateFilters(rawData);
+          renderTable(rawData);
+        }
+      });
+    });
+
+    document.getElementById('search').addEventListener('input', filterAndRender);
+    document.getElementById('filterAuthor').addEventListener('change', filterAndRender);
+    document.getElementById('filterExtension').addEventListener('change', filterAndRender);
+    document.getElementById('filterDeleteDate').addEventListener('change', filterAndRender);
+    document.getElementById('selectAll').addEventListener('change', function () {
+      document.querySelectorAll('.row-checkbox').forEach(cb => cb.checked = this.checked);
+    });
+
+    function populateFilters(data) {
+      const authors = new Set(), extensions = new Set(), deleteDates = new Set();
+      data.forEach(row => {
+        if (row.Autore) authors.add(row.Autore);
+        if (row.FileExtension) extensions.add(row.FileExtension);
+        if (row.DeleteDate) {
+          const date = new Date(row.DeleteDate);
+          if (!isNaN(date)) {
+            const formatted = date.toLocaleDateString('it-IT', { month: 'long', year: 'numeric' });
+            deleteDates.add(formatted);
+          }
+        }
+      });
+      fillSelect('filterAuthor', authors);
+      fillSelect('filterExtension', extensions);
+      fillSelect('filterDeleteDate', deleteDates);
+    }
+
+    function fillSelect(id, values) {
+      const select = document.getElementById(id);
+      select.innerHTML = `<option value="">${select.options[0].textContent}</option>`;
+      Array.from(values).sort().forEach(v => {
+        select.innerHTML += `<option value="${v}">${v}</option>`;
+      });
+    }
+
+    function filterAndRender() {
+      const search = document.getElementById('search').value.toLowerCase();
+      const author = document.getElementById('filterAuthor').value;
+      const ext = document.getElementById('filterExtension').value;
+      const del = document.getElementById('filterDeleteDate').value;
+
+      const filtered = rawData.filter(row => {
+        const rowDel = new Date(row.DeleteDate);
+        const rowMonth = !isNaN(rowDel) ? rowDel.toLocaleDateString('it-IT', { month: 'long', year: 'numeric' }) : '';
+        return (!author || row.Autore === author) &&
+               (!ext || row.FileExtension === ext) &&
+               (!del || rowMonth === del) &&
+               Object.values(row).some(val => val && val.toLowerCase().includes(search));
+      });
+
+      renderTable(filtered);
+    }
+
+    function renderTable(data) {
+      const tbody = document.querySelector('#fileTable tbody');
+      tbody.innerHTML = '';
+      if (data.length === 0) {
+        const tr = document.createElement('tr');
+        tr.innerHTML = `<td colspan="7" style="text-align:center">Nessun risultato trovato</td>`;
+        tbody.appendChild(tr);
+        return;
+      }
+      data.forEach((row, i) => {
+        const path = row.PercorsoFile ? row.PercorsoFile.replace(/"/g, '&quot;') : '';
+        const tr = document.createElement('tr');
+        tr.innerHTML = `
+          <td data-label="Seleziona"><input type="checkbox" class="row-checkbox" data-path="${path}"></td>
+          <td data-label="Autore">${row.Autore || ''}</td>
+          <td data-label="Titolo">${row.Title || ''}</td>
+          <td data-label="Percorso">${row.PercorsoFile || ''}</td>
+          <td data-label="Estensione">${row.FileExtension || ''}</td>
+          <td data-label="Trovato">${row.FindDate || ''}</td>
+          <td data-label="Cancellazione">${row.DeleteDate || ''}</td>
+        `;
+        tbody.appendChild(tr);
+      });
+    }
+
+    function ripristino() {
+    const paths = [];
+    document.querySelectorAll('.row-checkbox:checked').forEach(cb => paths.push(cb.dataset.path));
+
+    if (paths.length === 0) {
+        console.log("⚠️ Seleziona almeno un file da ripristinare.");
+        return;
+    }
+
+    const messaggio = encodeURIComponent("📁 File da ripristinare:\n" + paths.join("\n"));
+
+    // Prepara lo script che sarà iniettato nella pagina di Freshservice
+    const scriptInjection = `
+        (function(){
+            const testo = decodeURIComponent("${messaggio}");
+            
+            // Trova il campo di testo e il bottone "Place Request"
+            const textarea = document.querySelector('textarea[name="requested_item_values[546][requested_item_value_attributes][cf_lista_file_da_recuperare_457104]"]');
+            const inviaBtn = document.querySelector('input.place-request-btn');
+            
+            if (!textarea || !inviaBtn) {
+                console.log('❌ Impossibile trovare i campi nella pagina Freshservice.');
+                return;
+            }
+
+            // Imposta il valore del campo textarea
+            textarea.value = testo;
+
+            // Trigger eventi per far "sentire" la modifica
+            textarea.dispatchEvent(new Event('input', { bubbles: true }));
+            textarea.dispatchEvent(new Event('change', { bubbles: true }));
+
+            // Clicca sul bottone per inviare la richiesta
+            inviaBtn.click();
+            console.log('✅ Richiesta inviata, ora cerco il bottone "Confirm"');
+
+            // Attendere 7 secondi (in caso di ritardo nel caricamento del bottone)
+            setTimeout(function(){
+                const confirmBtn = document.querySelector('#confirm-request');
+                if (confirmBtn) {
+                    confirmBtn.click();
+                    console.log('✅ Confermato il ticket!');
+                } else {
+                    console.log('❌ Bottone "Confirm" non trovato.');
+                    // Aumenta il ritardo e cerca di nuovo
+                    setTimeout(arguments.callee, 2000);
+                }
+            }, 7000); // Ritardo di 7 secondi per maggiore affidabilità
+        })();
+    `;
+
+    // Apri Freshservice in una nuova finestra
+    const urlFreshservice = `https://jakalacorp.freshservice.com/support/catalog/items/546`;
+    const newTab = window.open(urlFreshservice, '_blank');
+
+    // Dopo 2 secondi, stampa le istruzioni nella console
+    setTimeout(() => {
+        console.log("✅ Ora vai nella scheda appena aperta e incolla questo codice nella Console (F12 > Console):\n\n" + decodeURIComponent(scriptInjection));
+    }, 2000);
+}
+
+  </script>
+</body>
+</html>
