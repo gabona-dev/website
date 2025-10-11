@@ -1,229 +1,795 @@
 <!DOCTYPE html>
 <html lang="it">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width,initial-scale=1">
-  <meta name="description" content="Generatore di QR Code gratuito, sicuro e veloce - funziona offline">
-  <meta name="theme-color" content="#3b82f6">
-  <!-- <meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'self' https://cdn.jsdelivr.net 'sha256-SCRIPT_HASH_PLACEHOLDER'; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob:; font-src 'self'; connect-src 'none'; frame-ancestors 'none'; base-uri 'self'; form-action 'none'">
-  <meta http-equiv="X-Content-Type-Options" content="nosniff">
-  <meta http-equiv="X-Frame-Options" content="DENY">
-  -->
-  <meta http-equiv="X-XSS-Protection" content="1; mode=block">
-  <meta name="referrer" content="strict-origin-when-cross-origin">
-  <title>Generatore QR Code Sicuro</title>
-  <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="description" content="Generatore di QR Code gratuito e sicuro - funziona offline" />
+  <meta name="theme-color" content="#3b82f6" />
+  <title>Generatore di QR Code Sicuro</title>
+
+  <!-- Font: Google Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+  <!-- Icone: Font Awesome -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
 
   <style>
-    *,::before,::after{box-sizing:border-box;margin:0;padding:0}
-    :root{
-      --primary:#3b82f6;--primary-hover:#2563eb;--primary-dark:#1e40af;
-      --success:#10b981;--success-hover:#059669;--danger:#ef4444;--warning:#f59e0b;
-      --bg-light:#f8fafc;--bg-secondary:#e2e8f0;--text-primary:#1e293b;--text-secondary:#64748b;
-      --border:#cbd5e1;--shadow-sm:0 2px 8px rgba(0,0,0,.08);--shadow-md:0 8px 20px rgba(0,0,0,.1);
-      --shadow-lg:0 12px 32px rgba(0,0,0,.12);--radius:12px;--radius-lg:16px
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
     }
-    body{
-      font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Oxygen,Ubuntu,Cantarell,sans-serif;
-      background:linear-gradient(135deg,#667eea 0%,#764ba2 100%);
-      display:flex;align-items:center;justify-content:center;min-height:100vh;padding:1rem;
-      -webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale
+
+    :root {
+      --primary: #3b82f6;
+      --primary-hover: #2563eb;
+      --primary-dark: #1e40af;
+      --success: #10b981;
+      --success-hover: #059669;
+      --danger: #ef4444;
+      --warning: #f59e0b;
+      --bg-light: #f8fafc;
+      --bg-secondary: #e2e8f0;
+      --text-primary: #1e293b;
+      --text-secondary: #64748b;
+      --border: #cbd5e1;
+      --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.08);
+      --shadow-md: 0 8px 20px rgba(0, 0, 0, 0.1);
+      --shadow-lg: 0 12px 32px rgba(0, 0, 0, 0.12);
+      --radius: 12px;
+      --radius-lg: 16px;
     }
-    .container{
-      background:#fff;padding:2rem;border-radius:var(--radius-lg);box-shadow:var(--shadow-lg);
-      max-width:600px;width:100%;animation:slideUp .4s ease-out
+
+    body {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+      padding: 1rem;
+      -webkit-font-smoothing: antialiased;
     }
-    @keyframes slideUp{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
-    header{text-align:center;margin-bottom:2rem}
-    h1{
-      font-size:1.875rem;font-weight:700;color:var(--text-primary);margin-bottom:.5rem;
-      display:flex;align-items:center;justify-content:center;gap:.5rem
+
+    .container {
+      background: white;
+      padding: 2rem;
+      border-radius: var(--radius-lg);
+      box-shadow: var(--shadow-lg);
+      max-width: 600px;
+      width: 100%;
+      animation: slideUp 0.4s ease-out;
     }
-    .subtitle{color:var(--text-secondary);font-size:.95rem;font-weight:400}
-    .input-group{margin-bottom:1.5rem}
-    label{
-      display:flex;align-items:center;gap:.375rem;margin-bottom:.5rem;
-      color:var(--text-primary);font-weight:500;font-size:.95rem
+
+    @keyframes slideUp {
+      from { 
+        opacity: 0; 
+        transform: translateY(20px); 
+      }
+      to { 
+        opacity: 1; 
+        transform: translateY(0); 
+      }
     }
-    .info-btn{
-      background:none;border:none;color:var(--primary);cursor:pointer;padding:.125rem;
-      font-size:.875rem;transition:all .2s;display:inline-flex;align-items:center;line-height:1
+
+    header {
+      text-align: center;
+      margin-bottom: 2rem;
     }
-    .info-btn:hover{color:var(--primary-dark);transform:scale(1.2)}
-    .info-btn svg{width:16px;height:16px;fill:currentColor}
-    input[type="text"],textarea{
-      width:100%;padding:.875rem 1rem;border:2px solid var(--border);border-radius:var(--radius);
-      font-size:1rem;font-family:inherit;transition:all .3s ease;background:#fff
+
+    h1 {
+      font-size: 1.875rem;
+      font-weight: 700;
+      color: var(--text-primary);
+      margin-bottom: 0.5rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.5rem;
     }
-    input[type="text"]:focus,textarea:focus{
-      outline:none;border-color:var(--primary);box-shadow:0 0 0 3px rgba(59,130,246,.1)
+
+    h1 i {
+      color: var(--primary);
+      font-size: 2rem;
     }
-    textarea{resize:vertical;min-height:100px;max-height:200px}
-    .options-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:1rem;margin-bottom:1.5rem}
-    .option-group label{font-size:.875rem;margin-bottom:.5rem}
-    select,input[type="number"],input[type="color"]{
-      width:100%;padding:.75rem;border:2px solid var(--border);border-radius:var(--radius);
-      font-size:.95rem;font-family:inherit;transition:border-color .3s;background:#fff
+
+    .subtitle {
+      color: var(--text-secondary);
+      font-size: 0.95rem;
+      font-weight: 400;
     }
-    select:focus,input[type="number"]:focus,input[type="color"]:focus{
-      outline:none;border-color:var(--primary);box-shadow:0 0 0 3px rgba(59,130,246,.1)
+
+    .input-group {
+      margin-bottom: 1.5rem;
     }
-    input[type="color"]{height:48px;cursor:pointer;padding:.25rem}
-    .button-group{display:flex;gap:.75rem;flex-wrap:wrap;justify-content:center;margin-bottom:1.5rem}
-    button,.btn{
-      padding:.875rem 1.5rem;font-size:1rem;font-weight:600;border:none;border-radius:var(--radius);
-      cursor:pointer;transition:all .3s ease;display:inline-flex;align-items:center;gap:.5rem;
-      text-decoration:none;font-family:inherit;white-space:nowrap
+
+    label {
+      display: flex;
+      align-items: center;
+      gap: 0.375rem;
+      margin-bottom: 0.5rem;
+      color: var(--text-primary);
+      font-weight: 500;
+      font-size: 0.95rem;
     }
-    button:disabled{opacity:.6;cursor:not-allowed}
-    .btn-primary{
-      background:linear-gradient(135deg,var(--primary) 0%,var(--primary-dark) 100%);
-      color:#fff;box-shadow:var(--shadow-sm)
+
+    label i {
+      font-size: 0.875rem;
     }
-    .btn-primary:hover:not(:disabled){transform:translateY(-2px);box-shadow:0 4px 12px rgba(59,130,246,.4)}
-    .btn-primary:active:not(:disabled){transform:translateY(0)}
-    .btn-success{
-      background:linear-gradient(135deg,var(--success) 0%,#047857 100%);
-      color:#fff;box-shadow:var(--shadow-sm)
+
+    .info-btn {
+      background: none;
+      border: none;
+      color: var(--primary);
+      cursor: pointer;
+      padding: 0.125rem;
+      font-size: 0.875rem;
+      transition: all 0.2s;
+      display: inline-flex;
+      align-items: center;
+      line-height: 1;
     }
-    .btn-success:hover:not(:disabled){transform:translateY(-2px);box-shadow:0 4px 12px rgba(16,185,129,.4)}
-    .btn-secondary{background:var(--bg-secondary);color:var(--text-primary)}
-    .btn-secondary:hover{background:var(--border)}
-    .qr-container{
-      background:var(--bg-light);padding:2rem;border-radius:var(--radius);margin-bottom:1.5rem;
-      min-height:300px;display:flex;align-items:center;justify-content:center;
-      border:2px dashed var(--border);transition:all .3s ease
+
+    .info-btn:hover {
+      color: var(--primary-dark);
+      transform: scale(1.2);
     }
-    .qr-container.has-qr{border-color:var(--success);background:#fff;box-shadow:var(--shadow-sm)}
-    canvas{max-width:100%;height:auto;display:block;animation:zoomIn .4s cubic-bezier(.34,1.56,.64,1);border-radius:8px}
-    @keyframes zoomIn{from{opacity:0;transform:scale(.8)}to{opacity:1;transform:scale(1)}}
-    .placeholder{color:var(--text-secondary);text-align:center;padding:2rem}
-    .placeholder svg{width:64px;height:64px;margin-bottom:1rem;opacity:.3;fill:currentColor}
-    .alert{
-      padding:1rem;border-radius:var(--radius);margin-bottom:1.5rem;display:none;
-      align-items:center;gap:.75rem;font-size:.9rem;animation:slideDown .3s ease-out
+
+    input[type="text"],
+    textarea {
+      width: 100%;
+      padding: 0.875rem 1rem;
+      border: 2px solid var(--border);
+      border-radius: var(--radius);
+      font-size: 1rem;
+      font-family: inherit;
+      transition: all 0.3s ease;
+      background: white;
     }
-    @keyframes slideDown{from{opacity:0;transform:translateY(-10px)}to{opacity:1;transform:translateY(0)}}
-    .alert.show{display:flex}
-    .alert-error{background:#fee;color:#991b1b;border:1px solid #fca5a5}
-    .alert-success{background:#d1fae5;color:#065f46;border:1px solid #6ee7b7}
-    .alert svg{width:20px;height:20px;fill:currentColor}
-    footer{text-align:center;padding-top:1.5rem;border-top:1px solid var(--bg-secondary);margin-top:1.5rem}
-    .footer-text{font-size:.875rem;color:var(--text-secondary);margin-bottom:.5rem}
-    .privacy-badge{
-      display:inline-flex;align-items:center;gap:.5rem;padding:.5rem 1rem;
-      background:var(--bg-light);border-radius:50px;font-size:.8rem;color:var(--text-secondary);margin-top:.5rem
+
+    input[type="text"]:focus,
+    textarea:focus {
+      outline: none;
+      border-color: var(--primary);
+      box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
     }
-    .privacy-badge svg{width:14px;height:14px;fill:var(--success)}
-    .char-counter{font-size:.8rem;color:var(--text-secondary);text-align:right;margin-top:.25rem}
-    .char-counter.warning{color:var(--warning)}
-    .char-counter.danger{color:var(--danger)}
-    .modal-overlay{
-      position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,.6);
-      backdrop-filter:blur(4px);display:none;align-items:center;justify-content:center;
-      z-index:1000;padding:1rem;animation:fadeIn .2s ease-out
+
+    textarea {
+      resize: vertical;
+      min-height: 100px;
+      max-height: 200px;
     }
-    .modal-overlay.show{display:flex}
-    .modal{
-      background:#fff;border-radius:var(--radius-lg);max-width:650px;width:100%;
-      max-height:90vh;overflow-y:auto;box-shadow:0 20px 60px rgba(0,0,0,.3);
-      animation:modalSlideUp .3s cubic-bezier(.34,1.56,.64,1)
+
+    .options-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 1rem;
+      margin-bottom: 1.5rem;
     }
-    @keyframes modalSlideUp{from{opacity:0;transform:translateY(30px) scale(.95)}to{opacity:1;transform:translateY(0) scale(1)}}
-    .modal-header{
-      padding:1.5rem;border-bottom:1px solid var(--bg-secondary);display:flex;
-      align-items:center;justify-content:space-between;position:sticky;top:0;
-      background:#fff;z-index:1;border-radius:var(--radius-lg) var(--radius-lg) 0 0
+
+    .option-group label {
+      font-size: 0.875rem;
+      margin-bottom: 0.5rem;
     }
-    .modal-title{
-      font-size:1.25rem;font-weight:700;color:var(--text-primary);
-      display:flex;align-items:center;gap:.5rem;margin:0
+
+    select,
+    input[type="number"],
+    input[type="color"] {
+      width: 100%;
+      padding: 0.75rem;
+      border: 2px solid var(--border);
+      border-radius: var(--radius);
+      font-size: 0.95rem;
+      font-family: inherit;
+      transition: border-color 0.3s;
+      background: white;
     }
-    .modal-title svg{width:24px;height:24px;fill:var(--primary)}
-    .modal-close{
-      background:var(--bg-light);border:none;width:32px;height:32px;border-radius:50%;
-      cursor:pointer;display:flex;align-items:center;justify-content:center;
-      color:var(--text-secondary);transition:all .2s;font-size:1.125rem;flex-shrink:0
+
+    select:focus,
+    input[type="number"]:focus,
+    input[type="color"]:focus {
+      outline: none;
+      border-color: var(--primary);
+      box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
     }
-    .modal-close:hover{background:var(--bg-secondary);color:var(--text-primary);transform:rotate(90deg)}
-    .modal-content{padding:1.5rem}
-    .modal-section{margin-bottom:1.75rem}
-    .modal-section:last-child{margin-bottom:0}
-    .modal-section h3{
-      font-size:1.05rem;font-weight:600;color:var(--text-primary);margin-bottom:1rem;
-      display:flex;align-items:center;gap:.5rem
+
+    input[type="color"] {
+      height: 48px;
+      cursor: pointer;
+      padding: 0.25rem;
     }
-    .modal-section h3 svg{width:18px;height:18px;fill:var(--primary)}
-    .modal-section p{color:var(--text-secondary);line-height:1.7;margin-bottom:.875rem}
-    .error-levels,.size-examples{display:grid;gap:.875rem}
-    .error-level-card,.size-card{
-      background:var(--bg-light);padding:1.125rem;border-radius:var(--radius);
-      border-left:4px solid var(--border);transition:all .2s
+
+    .button-group {
+      display: flex;
+      gap: 0.75rem;
+      flex-wrap: wrap;
+      justify-content: center;
+      margin-bottom: 1.5rem;
     }
-    .error-level-card:hover,.size-card:hover{background:#fff;box-shadow:var(--shadow-sm);transform:translateX(4px)}
-    .error-level-card.recommended,.size-card.recommended{border-left-color:var(--success);background:#ecfdf5}
-    .error-level-card h4,.size-card h4{
-      font-size:1rem;font-weight:600;color:var(--text-primary);margin:0 0 .5rem 0;
-      display:flex;align-items:center;gap:.5rem
+
+    button,
+    .btn {
+      padding: 0.875rem 1.5rem;
+      font-size: 1rem;
+      font-weight: 600;
+      border: none;
+      border-radius: var(--radius);
+      cursor: pointer;
+      transition: all 0.3s ease;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      text-decoration: none;
+      font-family: inherit;
+      white-space: nowrap;
     }
-    .error-level-card h4 svg,.size-card h4 svg{width:18px;height:18px;fill:currentColor}
-    .badge{
-      font-size:.7rem;padding:.25rem .625rem;border-radius:12px;
-      background:var(--success);color:#fff;font-weight:600;margin-left:auto
+
+    button:disabled {
+      opacity: 0.6;
+      cursor: not-allowed;
     }
-    .error-level-card p,.size-card p{margin:0 0 .625rem 0;font-size:.9rem;line-height:1.5}
-    .use-cases{background:#fff;padding:.875rem;border-radius:8px;margin-top:.625rem;border:1px solid var(--border)}
-    .use-cases strong{color:var(--text-primary);font-size:.825rem;display:block;margin-bottom:.5rem}
-    .use-cases ul{margin:0;padding-left:1.25rem;font-size:.825rem;color:var(--text-secondary)}
-    .use-cases li{margin-bottom:.25rem;line-height:1.5}
-    .use-cases li:last-child{margin-bottom:0}
-    .info-box{
-      background:linear-gradient(135deg,#dbeafe 0%,#e0e7ff 100%);
-      border-left:4px solid var(--primary);padding:1.125rem;border-radius:var(--radius);
-      display:flex;gap:.875rem;align-items:start
+
+    .btn-primary {
+      background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+      color: white;
+      box-shadow: var(--shadow-sm);
     }
-    .info-box svg{width:22px;height:22px;fill:var(--primary);margin-top:.125rem;flex-shrink:0}
-    .info-box-content{flex:1}
-    .info-box-content strong{display:block;color:var(--text-primary);font-size:.925rem;margin-bottom:.375rem}
-    .info-box-content p{margin:0;font-size:.875rem;line-height:1.6}
-    .comparison-table{
-      width:100%;border-collapse:collapse;margin-top:1rem;font-size:.875rem;
-      background:#fff;border-radius:var(--radius);overflow:hidden
+
+    .btn-primary:hover:not(:disabled) {
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(59, 130, 246, 0.4);
     }
-    .comparison-table th,.comparison-table td{padding:.75rem;text-align:left;border-bottom:1px solid var(--bg-secondary)}
-    .comparison-table th{
-      background:var(--bg-light);font-weight:600;color:var(--text-primary);
-      font-size:.8rem;text-transform:uppercase;letter-spacing:.5px
+
+    .btn-primary:active:not(:disabled) {
+      transform: translateY(0);
     }
-    .comparison-table tr:last-child td{border-bottom:none}
-    .comparison-table .icon-cell{text-align:center;font-size:1.125rem}
-    .comparison-table .check{color:var(--success)}
-    .comparison-table .times{color:var(--danger);opacity:.5}
-    .size-examples{grid-template-columns:repeat(auto-fit,minmax(200px,1fr))}
-    .loading{position:relative;pointer-events:none}
-    .loading::after{
-      content:'';position:absolute;top:50%;left:50%;width:20px;height:20px;
-      margin:-10px 0 0 -10px;border:2px solid rgba(255,255,255,.3);
-      border-top-color:#fff;border-radius:50%;animation:spin .6s linear infinite
+
+    .btn-success {
+      background: linear-gradient(135deg, var(--success) 0%, #047857 100%);
+      color: white;
+      box-shadow: var(--shadow-sm);
     }
-    @keyframes spin{to{transform:rotate(360deg)}}
-    @media(max-width:640px){
-      body{padding:.5rem}
-      .container{padding:1.5rem}
-      h1{font-size:1.5rem}
-      .options-grid{grid-template-columns:1fr;gap:1rem}
-      .button-group{flex-direction:column}
-      button,.btn{width:100%;justify-content:center}
-      .qr-container{padding:1.5rem;min-height:250px}
-      .modal{max-width:100%;max-height:95vh}
-      .modal-content{padding:1rem}
-      .modal-header{padding:1rem}
-      .modal-title{font-size:1.125rem}
-      .comparison-table{font-size:.75rem}
-      .comparison-table th,.comparison-table td{padding:.5rem .375rem}
+
+    .btn-success:hover:not(:disabled) {
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(16, 185, 129, 0.4);
     }
-    @media(prefers-reduced-motion:reduce){
-      *{animation-duration:.01ms!important;transition-duration:.01ms!important}
+
+    .btn-secondary {
+      background: var(--bg-secondary);
+      color: var(--text-primary);
+    }
+
+    .btn-secondary:hover {
+      background: var(--border);
+    }
+
+    .qr-container {
+      background: var(--bg-light);
+      padding: 2rem;
+      border-radius: var(--radius);
+      margin-bottom: 1.5rem;
+      min-height: 300px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border: 2px dashed var(--border);
+      transition: all 0.3s ease;
+    }
+
+    .qr-container.has-qr {
+      border-color: var(--success);
+      background: white;
+      box-shadow: var(--shadow-sm);
+    }
+
+    canvas {
+      max-width: 100%;
+      height: auto;
+      display: block;
+      animation: zoomIn 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+      border-radius: 8px;
+    }
+
+    @keyframes zoomIn {
+      from { 
+        opacity: 0; 
+        transform: scale(0.8);
+      }
+      to { 
+        opacity: 1; 
+        transform: scale(1);
+      }
+    }
+
+    .placeholder {
+      color: var(--text-secondary);
+      text-align: center;
+      padding: 2rem;
+    }
+
+    .placeholder i {
+      font-size: 4rem;
+      margin-bottom: 1rem;
+      opacity: 0.3;
+    }
+
+    .alert {
+      padding: 1rem;
+      border-radius: var(--radius);
+      margin-bottom: 1.5rem;
+      display: none;
+      align-items: center;
+      gap: 0.75rem;
+      font-size: 0.9rem;
+      animation: slideDown 0.3s ease-out;
+    }
+
+    @keyframes slideDown {
+      from { opacity: 0; transform: translateY(-10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .alert.show {
+      display: flex;
+    }
+
+    .alert-error {
+      background: #fee;
+      color: #991b1b;
+      border: 1px solid #fca5a5;
+    }
+
+    .alert-success {
+      background: #d1fae5;
+      color: #065f46;
+      border: 1px solid #6ee7b7;
+    }
+
+    .alert i {
+      font-size: 1.25rem;
+    }
+
+    footer {
+      text-align: center;
+      padding-top: 1.5rem;
+      border-top: 1px solid var(--bg-secondary);
+      margin-top: 1.5rem;
+    }
+
+    .footer-text {
+      font-size: 0.875rem;
+      color: var(--text-secondary);
+      margin-bottom: 0.5rem;
+    }
+
+    .privacy-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.5rem 1rem;
+      background: var(--bg-light);
+      border-radius: 50px;
+      font-size: 0.8rem;
+      color: var(--text-secondary);
+      margin-top: 0.5rem;
+    }
+
+    .privacy-badge i {
+      color: var(--success);
+    }
+
+    .char-counter {
+      font-size: 0.8rem;
+      color: var(--text-secondary);
+      text-align: right;
+      margin-top: 0.25rem;
+    }
+
+    .char-counter.warning {
+      color: var(--warning);
+    }
+
+    .char-counter.danger {
+      color: var(--danger);
+    }
+
+    /* Modal Styles */
+    .modal-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: rgba(0, 0, 0, 0.6);
+      backdrop-filter: blur(4px);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      z-index: 1000;
+      padding: 1rem;
+      animation: fadeIn 0.2s ease-out;
+    }
+
+    .modal-overlay.show {
+      display: flex;
+    }
+
+    .modal {
+      background: white;
+      border-radius: var(--radius-lg);
+      max-width: 650px;
+      width: 100%;
+      max-height: 90vh;
+      overflow-y: auto;
+      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+      animation: modalSlideUp 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+      position: relative;
+    }
+
+    @keyframes modalSlideUp {
+      from {
+        opacity: 0;
+        transform: translateY(30px) scale(0.95);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+      }
+    }
+
+    .modal-header {
+      padding: 1.5rem;
+      border-bottom: 1px solid var(--bg-secondary);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      position: sticky;
+      top: 0;
+      background: white;
+      z-index: 1;
+      border-radius: var(--radius-lg) var(--radius-lg) 0 0;
+    }
+
+    .modal-title {
+      font-size: 1.25rem;
+      font-weight: 700;
+      color: var(--text-primary);
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      margin: 0;
+    }
+
+    .modal-title i {
+      color: var(--primary);
+    }
+
+    .modal-close {
+      background: var(--bg-light);
+      border: none;
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--text-secondary);
+      transition: all 0.2s;
+      font-size: 1.125rem;
+      flex-shrink: 0;
+    }
+
+    .modal-close:hover {
+      background: var(--bg-secondary);
+      color: var(--text-primary);
+      transform: rotate(90deg);
+    }
+
+    .modal-content {
+      padding: 1.5rem;
+    }
+
+    .modal-section {
+      margin-bottom: 1.75rem;
+    }
+
+    .modal-section:last-child {
+      margin-bottom: 0;
+    }
+
+    .modal-section h3 {
+      font-size: 1.05rem;
+      font-weight: 600;
+      color: var(--text-primary);
+      margin-bottom: 1rem;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .modal-section h3 i {
+      color: var(--primary);
+      font-size: 1rem;
+    }
+
+    .modal-section p {
+      color: var(--text-secondary);
+      line-height: 1.7;
+      margin-bottom: 0.875rem;
+    }
+
+    .error-levels {
+      display: grid;
+      gap: 0.875rem;
+    }
+
+    .error-level-card,
+    .size-card {
+      background: var(--bg-light);
+      padding: 1.125rem;
+      border-radius: var(--radius);
+      border-left: 4px solid var(--border);
+      transition: all 0.2s;
+    }
+
+    .error-level-card:hover,
+    .size-card:hover {
+      background: white;
+      box-shadow: var(--shadow-sm);
+      transform: translateX(4px);
+    }
+
+    .error-level-card.recommended,
+    .size-card.recommended {
+      border-left-color: var(--success);
+      background: #ecfdf5;
+    }
+
+    .error-level-card h4,
+    .size-card h4 {
+      font-size: 1rem;
+      font-weight: 600;
+      color: var(--text-primary);
+      margin: 0 0 0.5rem 0;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .error-level-card h4 i,
+    .size-card h4 i {
+      font-size: 1.125rem;
+    }
+
+    .badge {
+      font-size: 0.7rem;
+      padding: 0.25rem 0.625rem;
+      border-radius: 12px;
+      background: var(--success);
+      color: white;
+      font-weight: 600;
+      margin-left: auto;
+    }
+
+    .error-level-card p,
+    .size-card p {
+      margin: 0 0 0.625rem 0;
+      font-size: 0.9rem;
+      line-height: 1.5;
+    }
+
+    .use-cases {
+      background: white;
+      padding: 0.875rem;
+      border-radius: 8px;
+      margin-top: 0.625rem;
+      border: 1px solid var(--border);
+    }
+
+    .use-cases strong {
+      color: var(--text-primary);
+      font-size: 0.825rem;
+      display: block;
+      margin-bottom: 0.5rem;
+    }
+
+    .use-cases ul {
+      margin: 0;
+      padding-left: 1.25rem;
+      font-size: 0.825rem;
+      color: var(--text-secondary);
+    }
+
+    .use-cases li {
+      margin-bottom: 0.25rem;
+      line-height: 1.5;
+    }
+
+    .use-cases li:last-child {
+      margin-bottom: 0;
+    }
+
+    .info-box {
+      background: linear-gradient(135deg, #dbeafe 0%, #e0e7ff 100%);
+      border-left: 4px solid var(--primary);
+      padding: 1.125rem;
+      border-radius: var(--radius);
+      display: flex;
+      gap: 0.875rem;
+      align-items: start;
+    }
+
+    .info-box i {
+      color: var(--primary);
+      font-size: 1.375rem;
+      margin-top: 0.125rem;
+      flex-shrink: 0;
+    }
+
+    .info-box-content {
+      flex: 1;
+    }
+
+    .info-box-content strong {
+      display: block;
+      color: var(--text-primary);
+      font-size: 0.925rem;
+      margin-bottom: 0.375rem;
+    }
+
+    .info-box-content p {
+      margin: 0;
+      font-size: 0.875rem;
+      line-height: 1.6;
+    }
+
+    .comparison-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 1rem;
+      font-size: 0.875rem;
+      background: white;
+      border-radius: var(--radius);
+      overflow: hidden;
+    }
+
+    .comparison-table th,
+    .comparison-table td {
+      padding: 0.75rem;
+      text-align: left;
+      border-bottom: 1px solid var(--bg-secondary);
+    }
+
+    .comparison-table th {
+      background: var(--bg-light);
+      font-weight: 600;
+      color: var(--text-primary);
+      font-size: 0.8rem;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .comparison-table tr:last-child td {
+      border-bottom: none;
+    }
+
+    .comparison-table .icon-cell {
+      text-align: center;
+      font-size: 1.125rem;
+    }
+
+    .comparison-table .check {
+      color: var(--success);
+    }
+
+    .comparison-table .times {
+      color: var(--danger);
+      opacity: 0.5;
+    }
+
+    .size-examples {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 1rem;
+      margin-top: 1rem;
+    }
+
+    /* Responsive Design */
+    @media (max-width: 640px) {
+      body {
+        padding: 0.5rem;
+      }
+
+      .container {
+        padding: 1.5rem;
+      }
+
+      h1 {
+        font-size: 1.5rem;
+      }
+
+      h1 i {
+        font-size: 1.625rem;
+      }
+
+      .options-grid {
+        grid-template-columns: 1fr;
+        gap: 1rem;
+      }
+
+      .button-group {
+        flex-direction: column;
+      }
+
+      button,
+      .btn {
+        width: 100%;
+        justify-content: center;
+      }
+
+      .qr-container {
+        padding: 1.5rem;
+        min-height: 250px;
+      }
+
+      .modal {
+        max-width: 100%;
+        max-height: 95vh;
+      }
+
+      .modal-content {
+        padding: 1rem;
+      }
+
+      .modal-header {
+        padding: 1rem;
+      }
+
+      .modal-title {
+        font-size: 1.125rem;
+      }
+
+      .comparison-table {
+        font-size: 0.75rem;
+      }
+
+      .comparison-table th,
+      .comparison-table td {
+        padding: 0.5rem 0.375rem;
+      }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      * {
+        animation-duration: 0.01ms !important;
+        transition-duration: 0.01ms !important;
+      }
+    }
+
+    /* Loading State */
+    .loading {
+      position: relative;
+      pointer-events: none;
+    }
+
+    .loading::after {
+      content: '';
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      width: 20px;
+      height: 20px;
+      margin: -10px 0 0 -10px;
+      border: 2px solid rgba(255, 255, 255, 0.3);
+      border-top-color: white;
+      border-radius: 50%;
+      animation: spin 0.6s linear infinite;
+    }
+
+    @keyframes spin {
+      to { transform: rotate(360deg); }
     }
   </style>
 </head>
@@ -231,38 +797,43 @@
   <div class="container">
     <header>
       <h1>
-        <svg viewBox="0 0 24 24" width="32" height="32" fill="currentColor"><path d="M3 11h8V3H3v8zm2-6h4v4H5V5zM3 21h8v-8H3v8zm2-6h4v4H5v-4zM13 3v8h8V3h-8zm6 6h-4V5h4v4zM13 13h2v2h-2v-2zm2 2h2v2h-2v-2zm-2 2h2v2h-2v-2zm4-4h2v2h-2v-2zm0 4h2v2h-2v-2zm2-2h2v2h-2v-2zm0-4h2v2h-2v-2zm-4 8h2v2h-2v-2z"/></svg>
+        <i class="fa-solid fa-qrcode"></i>
         Generatore QR Code
       </h1>
       <p class="subtitle">Crea QR code personalizzati in modo sicuro e veloce</p>
     </header>
 
     <div class="alert alert-error" id="errorAlert">
-      <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-2h2v2zm0-4h-2V7h2v6z"/></svg>
+      <i class="fa-solid fa-circle-exclamation"></i>
       <span id="errorMessage"></span>
     </div>
 
     <div class="alert alert-success" id="successAlert">
-      <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/></svg>
+      <i class="fa-solid fa-circle-check"></i>
       <span>QR Code generato con successo!</span>
     </div>
 
     <div class="input-group">
       <label for="text">
-        <svg viewBox="0 0 24 24" width="16" height="16"><path d="M3.9 12c0-1.71 1.39-3.1 3.1-3.1h4V7H7c-2.76 0-5 2.24-5 5s2.24 5 5 5h4v-1.9H7c-1.71 0-3.1-1.39-3.1-3.1zM8 13h8v-2H8v2zm9-6h-4v1.9h4c1.71 0 3.1 1.39 3.1 3.1s-1.39 3.1-3.1 3.1h-4V17h4c2.76 0 5-2.24 5-5s-2.24-5-5-5z"/></svg>
+        <i class="fa-solid fa-link"></i>
         Contenuto del QR Code
       </label>
-      <textarea id="text" placeholder="Inserisci URL, testo, numero di telefono, email..." maxlength="2000" aria-label="Contenuto del QR Code"></textarea>
+      <textarea 
+        id="text" 
+        placeholder="Inserisci URL, testo, numero di telefono, email..."
+        maxlength="2000"
+        aria-label="Contenuto del QR Code"
+      ></textarea>
       <div class="char-counter" id="charCounter">0 / 2000 caratteri</div>
     </div>
 
     <div class="options-grid">
       <div class="option-group">
         <label for="errorLevel">
-          <svg viewBox="0 0 24 24" width="14" height="14"><path d="M12 1L3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-9-4zm0 10.99h7c-.53 4.12-3.28 7.79-7 8.94V12H5V6.3l7-3.11v8.8z"/></svg>
+          <i class="fa-solid fa-shield-halved"></i>
           Correzione errori
           <button type="button" class="info-btn" id="errorLevelInfo" aria-label="Info correzione errori">
-            <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-6h2v6zm0-8h-2V7h2v2z"/></svg>
+            <i class="fa-solid fa-circle-info"></i>
           </button>
         </label>
         <select id="errorLevel" aria-label="Livello di correzione errori">
@@ -275,56 +846,627 @@
 
       <div class="option-group">
         <label for="size">
-          <svg viewBox="0 0 24 24" width="14" height="14"><path d="M15 3l2.3 2.3-2.89 2.87 1.42 1.42L18.7 6.7 21 9V3h-6zM3 9l2.3-2.3 2.87 2.89 1.42-1.42L6.7 5.3 9 3H3v6zm6 12l-2.3-2.3 2.89-2.87-1.42-1.42L5.3 17.3 3 15v6h6zm12-6l-2.3 2.3-2.87-2.89-1.42 1.42 2.89 2.87L15 21h6v-6z"/></svg>
+          <i class="fa-solid fa-maximize"></i>
           Dimensione
           <button type="button" class="info-btn" id="sizeInfo" aria-label="Info dimensione">
-            <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-6h2v6zm0-8h-2V7h2v2z"/></svg>
+            <i class="fa-solid fa-circle-info"></i>
           </button>
         </label>
-        <input type="number" id="size" min="128" max="1024" value="300" step="32" aria-label="Dimensione del QR Code">
+        <input 
+          type="number" 
+          id="size" 
+          min="128" 
+          max="1024" 
+          value="300" 
+          step="32"
+          aria-label="Dimensione del QR Code"
+        />
       </div>
 
       <div class="option-group">
         <label for="colorDark">
-          <svg viewBox="0 0 24 24" width="14" height="14"><path d="M12 3c-4.97 0-9 4.03-9 9s4.03 9 9 9c.83 0 1.5-.67 1.5-1.5 0-.39-.15-.74-.39-1.01-.23-.26-.38-.61-.38-.99 0-.83.67-1.5 1.5-1.5H16c2.76 0 5-2.24 5-5 0-4.42-4.03-8-9-8zm-5.5 9c-.83 0-1.5-.67-1.5-1.5S5.67 9 6.5 9 8 9.67 8 10.5 7.33 12 6.5 12zm3-4C8.67 8 8 7.33 8 6.5S8.67 5 9.5 5s1.5.67 1.5 1.5S10.33 8 9.5 8zm5 0c-.83 0-1.5-.67-1.5-1.5S13.67 5 14.5 5s1.5.67 1.5 1.5S15.33 8 14.5 8zm3 4c-.83 0-1.5-.67-1.5-1.5S16.67 9 17.5 9s1.5.67 1.5 1.5-.67 1.5-1.5 1.5z"/></svg>
+          <i class="fa-solid fa-palette"></i>
           Colore principale
         </label>
-        <input type="color" id="colorDark" value="#000000" aria-label="Colore principale del QR Code">
+        <input 
+          type="color" 
+          id="colorDark" 
+          value="#000000"
+          aria-label="Colore principale del QR Code"
+        />
       </div>
 
       <div class="option-group">
         <label for="colorLight">
-          <svg viewBox="0 0 24 24" width="14" height="14"><path d="M16.56 8.94L7.62 0 6.21 1.41l2.38 2.38-5.15 5.15c-.59.59-.59 1.54 0 2.12l5.5 5.5c.29.29.68.44 1.06.44s.77-.15 1.06-.44l5.5-5.5c.59-.58.59-1.53 0-2.12zM5.21 10L10 5.21 14.79 10H5.21zM19 11.5s-2 2.17-2 3.5c0 1.1.9 2 2 2s2-.9 2-2c0-1.33-2-3.5-2-3.5z"/></svg>
+          <i class="fa-solid fa-fill-drip"></i>
           Colore sfondo
         </label>
-        <input type="color" id="colorLight" value="#ffffff" aria-label="Colore di sfondo del QR Code">
+        <input 
+          type="color" 
+          id="colorLight" 
+          value="#ffffff"
+          aria-label="Colore di sfondo del QR Code"
+        />
       </div>
     </div>
 
     <div class="button-group">
       <button class="btn btn-primary" id="generate">
-        <svg viewBox="0 0 24 24" width="18" height="18"><path d="M7 11h10v2H7zM12 5h2v10h-2z"/><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8z"/></svg>
-        Genera QR Code
+        <i class="fa-solid fa-wand-magic-sparkles"></i> Genera QR Code
       </button>
-      <button class="btn btn-secondary" id="reset" style="display:none">
-        <svg viewBox="0 0 24 24" width="18" height="18"><path d="M12 5V1L7 6l5 5V7c3.31 0 6 2.69 6 6s-2.69 6-6 6-6-2.69-6-6H4c0 4.42 3.58 8 8 8s8-3.58 8-8-3.58-8-8-8z"/></svg>
-        Nuovo QR Code
+      <button class="btn btn-secondary" id="reset" style="display: none;">
+        <i class="fa-solid fa-rotate-left"></i> Nuovo QR Code
       </button>
     </div>
 
     <div class="qr-container" id="qrContainer">
       <div class="placeholder" id="placeholder">
-        <svg viewBox="0 0 24 24"><path d="M3 11h8V3H3v8zm2-6h4v4H5V5zM3 21h8v-8H3v8zm2-6h4v4H5v-4zM13 3v8h8V3h-8zm6 6h-4V5h4v4zM13 13h2v2h-2v-2zm2 2h2v2h-2v-2zm-2 2h2v2h-2v-2zm4-4h2v2h-2v-2zm0 4h2v2h-2v-2zm2-2h2v2h-2v-2zm0-4h2v2h-2v-2zm-4 8h2v2h-2v-2z"/></svg>
+        <i class="fa-solid fa-qrcode"></i>
         <p>Il tuo QR Code apparirà qui</p>
       </div>
-      <canvas id="canvas" style="display:none"></canvas>
+      <canvas id="canvas" style="display: none;"></canvas>
     </div>
 
-    <div class="button-group" id="downloadGroup" style="display:none">
+    <div class="button-group" id="downloadGroup" style="display: none;">
       <a class="btn btn-success" id="downloadPNG" download="qrcode.png">
-        <svg viewBox="0 0 24 24" width="18" height="18"><path d="M19 12v7H5v-7H3v7c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-7h-2zm-6 .67l2.59-2.58L17 11.5l-5 5-5-5 1.41-1.41L11 12.67V3h2z"/></svg>
-        Scarica PNG
+        <i class="fa-solid fa-download"></i> Scarica PNG
       </a>
       <button class="btn btn-success" id="downloadSVG">
+        <i class="fa-solid fa-file-code"></i> Scarica SVG
+      </button>
+      <button class="btn btn-secondary" id="copyImage">
+        <i class="fa-solid fa-copy"></i> Copia immagine
+      </button>
+    </div>
 
-        <svg viewBox="0 0 24 24" width="18" height="18"><path d="M14
+    <footer>
+      <p class="footer-text">
+        Creato con <i class="fa-solid fa-heart" style="color: #ef4444;"></i> per la privacy e la sicurezza
+      </p>
+      <div class="privacy-badge">
+        <i class="fa-solid fa-lock"></i>
+        <span>100% offline • Nessun dato inviato • Open Source</span>
+      </div>
+    </footer>
+  </div>
+
+  <!-- Modal Info Correzione Errori -->
+  <div class="modal-overlay" id="errorLevelModal">
+    <div class="modal">
+      <div class="modal-header">
+        <h2 class="modal-title">
+          <i class="fa-solid fa-shield-halved"></i>
+          Correzione Errori
+        </h2>
+        <button class="modal-close" id="closeErrorModal" aria-label="Chiudi">
+          <i class="fa-solid fa-xmark"></i>
+        </button>
+      </div>
+      <div class="modal-content">
+        <div class="modal-section">
+          <h3><i class="fa-solid fa-lightbulb"></i> Cos'è la correzione errori?</h3>
+          <p>
+            La correzione errori permette al QR Code di <strong>funzionare anche se parzialmente danneggiato, sporco o graffiato</strong>. Utilizza l'algoritmo Reed-Solomon che aggiunge dati ridondanti.
+          </p>
+        </div>
+
+        <div class="modal-section">
+          <h3><i class="fa-solid fa-layer-group"></i> I 4 Livelli Disponibili</h3>
+          <div class="error-levels">
+            <div class="error-level-card">
+              <h4>
+                <i class="fa-solid fa-shield" style="color: #94a3b8;"></i>
+                L - Basso (7%)
+              </h4>
+              <p>Recupera fino al 7% di dati danneggiati</p>
+              <div class="use-cases">
+                <strong>💡 Quando usarlo:</strong>
+                <ul>
+                  <li>QR visualizzati solo su schermo</li>
+                  <li>Stampe su superfici perfette</li>
+                  <li>Quando serve il QR più piccolo</li>
+                </ul>
+              </div>
+            </div>
+
+            <div class="error-level-card recommended">
+              <h4>
+                <i class="fa-solid fa-shield-halved" style="color: #10b981;"></i>
+                M - Medio (15%)
+                <span class="badge">CONSIGLIATO</span>
+              </h4>
+              <p>Recupera fino al 15% di dati danneggiati</p>
+              <div class="use-cases">
+                <strong>💡 Quando usarlo:</strong>
+                <ul>
+                  <li>Uso quotidiano standard</li>
+                  <li>Volantini e biglietti da visita</li>
+                  <li>Equilibrio perfetto dimensione/affidabilità</li>
+                </ul>
+              </div>
+            </div>
+
+            <div class="error-level-card">
+              <h4>
+                <i class="fa-solid fa-shield-halved" style="color: #f59e0b;"></i>
+                Q - Alto (25%)
+              </h4>
+              <p>Recupera fino al 25% di dati danneggiati</p>
+              <div class="use-cases">
+                <strong>💡 Quando usarlo:</strong>
+                <ul>
+                  <li>Ambienti con possibile usura</li>
+                  <li>Adesivi esterni esposti alle intemperie</li>
+                  <li>Etichette su prodotti commerciali</li>
+                </ul>
+              </div>
+            </div>
+
+            <div class="error-level-card">
+              <h4>
+                <i class="fa-solid fa-shield" style="color: #3b82f6;"></i>
+                H - Massimo (30%)
+              </h4>
+              <p>Recupera fino al 30% di dati danneggiati</p>
+              <div class="use-cases">
+                <strong>💡 Quando usarlo:</strong>
+                <ul>
+                  <li>QR code con logo al centro</li>
+                  <li>Superfici che si deteriorano facilmente</li>
+                  <li>Ambienti industriali o magazzini</li>
+                  <li>Scansione garantita in ogni condizione</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="modal-section">
+          <h3><i class="fa-solid fa-scale-balanced"></i> Il Trade-off</h3>
+          <p><strong>Più alta è la correzione errori, più il QR Code sarà grande e complesso.</strong></p>
+          <table class="comparison-table">
+            <thead>
+              <tr>
+                <th>Livello</th>
+                <th>Dimensione</th>
+                <th>Resistenza</th>
+                <th>Con logo</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><strong>L (7%)</strong></td>
+                <td>Più piccolo</td>
+                <td class="icon-cell times"><i class="fa-solid fa-xmark"></i></td>
+                <td class="icon-cell times"><i class="fa-solid fa-xmark"></i></td>
+              </tr>
+              <tr>
+                <td><strong>M (15%)</strong></td>
+                <td>Piccolo</td>
+                <td class="icon-cell check"><i class="fa-solid fa-check"></i></td>
+                <td class="icon-cell times"><i class="fa-solid fa-xmark"></i></td>
+              </tr>
+              <tr>
+                <td><strong>Q (25%)</strong></td>
+                <td>Medio</td>
+                <td class="icon-cell check"><i class="fa-solid fa-check"></i></td>
+                <td class="icon-cell check"><i class="fa-solid fa-check"></i></td>
+              </tr>
+              <tr>
+                <td><strong>H (30%)</strong></td>
+                <td>Più grande</td>
+                <td class="icon-cell check"><i class="fa-solid fa-check"></i><i class="fa-solid fa-check"></i></td>
+                <td class="icon-cell check"><i class="fa-solid fa-check"></i><i class="fa-solid fa-check"></i></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="modal-section">
+          <div class="info-box">
+            <i class="fa-solid fa-lightbulb"></i>
+            <div class="info-box-content">
+              <strong>💡 Esempio Pratico</strong>
+              <p>
+                Stampi un QR su un volantino che potrebbe bagnarsi:<br>
+                <strong>Livello L:</strong> Potrebbe non funzionare ❌<br>
+                <strong>Livello M:</strong> Funziona con lievi danni ✓<br>
+                <strong>Livello H:</strong> Funziona anche con macchie evidenti ✓✓
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal Info Dimensione -->
+  <div class="modal-overlay" id="sizeModal">
+    <div class="modal">
+      <div class="modal-header">
+        <h2 class="modal-title">
+          <i class="fa-solid fa-maximize"></i>
+          Dimensione del QR Code
+        </h2>
+        <button class="modal-close" id="closeSizeModal" aria-label="Chiudi">
+          <i class="fa-solid fa-xmark"></i>
+        </button>
+      </div>
+      <div class="modal-content">
+        <div class="modal-section">
+          <h3><i class="fa-solid fa-lightbulb"></i> Cos'è la dimensione?</h3>
+          <p>
+            La dimensione è semplicemente la <strong>grandezza in pixel dell'immagine QR Code</strong> generata. 
+            Un QR da 300px significa un'immagine quadrata di 300×300 pixel.
+          </p>
+        </div>
+
+        <div class="modal-section">
+          <h3><i class="fa-solid fa-rulers"></i> Dimensioni Disponibili</h3>
+          <div class="size-examples">
+            <div class="size-card">
+              <h4>
+                <i class="fa-solid fa-mobile-screen" style="color: #94a3b8;"></i>
+                128-256 px
+              </h4>
+              <p>Piccolo - ideale per icone e web</p>
+              <div class="use-cases">
+                <strong>💡 Quando usarlo:</strong>
+                <ul>
+                  <li>Icone su siti web</li>
+                  <li>Email signature</li>
+                  <li>Badge digitali piccoli</li>
+                </ul>
+              </div>
+            </div>
+
+            <div class="size-card recommended">
+              <h4>
+                <i class="fa-solid fa-desktop" style="color: #10b981;"></i>
+                300-400 px
+                <span class="badge">CONSIGLIATO</span>
+              </h4>
+              <p>Medio - perfetto per uso generale</p>
+              <div class="use-cases">
+                <strong>💡 Quando usarlo:</strong>
+                <ul>
+                  <li>Social media e web</li>
+                  <li>Schermo smartphone</li>
+                  <li>Presentazioni digitali</li>
+                  <li>Stampe standard A4</li>
+                </ul>
+              </div>
+            </div>
+
+            <div class="size-card">
+              <h4>
+                <i class="fa-solid fa-file-image" style="color: #f59e0b;"></i>
+                512-768 px
+              </h4>
+              <p>Grande - per stampe di qualità</p>
+              <div class="use-cases">
+                <strong>💡 Quando usarlo:</strong>
+                <ul>
+                  <li>Stampe su carta A4/A3</li>
+                  <li>Poster e locandine</li>
+                  <li>Volantini professionali</li>
+                </ul>
+              </div>
+            </div>
+
+            <div class="size-card">
+              <h4>
+                <i class="fa-solid fa-print" style="color: #3b82f6;"></i>
+                1024 px
+              </h4>
+              <p>Extra Large - stampe professionali</p>
+              <div class="use-cases">
+                <strong>💡 Quando usarlo:</strong>
+                <ul>
+                  <li>Banner e striscioni grandi</li>
+                  <li>Stampe professionali ad alta risoluzione</li>
+                  <li>Insegne e cartelloni pubblicitari</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="modal-section">
+          <div class="info-box">
+            <i class="fa-solid fa-circle-info"></i>
+            <div class="info-box-content">
+              <strong>⚠️ Importante da sapere</strong>
+              <p>
+                <strong>Dimensione ≠ Complessità del QR</strong><br>
+                La complessità (quanti quadratini ha il QR) dipende dalla quantità di dati e dal livello di correzione errori.
+                La dimensione è solo quanto <strong>grande</strong> vuoi l'immagine finale!
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <div class="modal-section">
+          <div class="info-box">
+            <i class="fa-solid fa-lightbulb"></i>
+            <div class="info-box-content">
+              <strong>💡 Consiglio Pratico</strong>
+              <p>
+                Per la maggior parte degli usi (web, social, stampe standard), <strong>300-400px</strong> è la scelta perfetta. 
+                Dimensioni maggiori servono solo per stampe molto grandi o professionali.
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Libreria QRCode -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+
+  <script>
+    // Elementi DOM
+    const elements = {
+      text: document.getElementById('text'),
+      canvas: document.getElementById('canvas'),
+      generateBtn: document.getElementById('generate'),
+      resetBtn: document.getElementById('reset'),
+      downloadPNG: document.getElementById('downloadPNG'),
+      downloadSVG: document.getElementById('downloadSVG'),
+      copyImage: document.getElementById('copyImage'),
+      downloadGroup: document.getElementById('downloadGroup'),
+      qrContainer: document.getElementById('qrContainer'),
+      placeholder: document.getElementById('placeholder'),
+      errorAlert: document.getElementById('errorAlert'),
+      successAlert: document.getElementById('successAlert'),
+      errorMessage: document.getElementById('errorMessage'),
+      charCounter: document.getElementById('charCounter'),
+      errorLevel: document.getElementById('errorLevel'),
+      size: document.getElementById('size'),
+      colorDark: document.getElementById('colorDark'),
+      colorLight: document.getElementById('colorLight'),
+      errorLevelInfo: document.getElementById('errorLevelInfo'),
+      errorLevelModal: document.getElementById('errorLevelModal'),
+      closeErrorModal: document.getElementById('closeErrorModal'),
+      sizeInfo: document.getElementById('sizeInfo'),
+      sizeModal: document.getElementById('sizeModal'),
+      closeSizeModal: document.getElementById('closeSizeModal')
+    };
+
+    // Stato dell'applicazione
+    let currentQRData = null;
+
+    // Funzioni di utilità
+    function sanitizeInput(input) {
+      const temp = document.createElement('div');
+      temp.textContent = input;
+      return temp.innerHTML;
+    }
+
+    function showAlert(type, message) {
+      if (type === 'error') {
+        elements.errorMessage.textContent = message;
+        elements.errorAlert.classList.add('show');
+        elements.successAlert.classList.remove('show');
+        setTimeout(() => elements.errorAlert.classList.remove('show'), 5000);
+      } else if (type === 'success') {
+        elements.successAlert.classList.add('show');
+        elements.errorAlert.classList.remove('show');
+        setTimeout(() => elements.successAlert.classList.remove('show'), 3000);
+      }
+    }
+
+    function updateCharCounter() {
+      const length = elements.text.value.length;
+      const max = 2000;
+      elements.charCounter.textContent = `${length} / ${max} caratteri`;
+      
+      elements.charCounter.classList.remove('warning', 'danger');
+      if (length > max * 0.9) {
+        elements.charCounter.classList.add('danger');
+      } else if (length > max * 0.7) {
+        elements.charCounter.classList.add('warning');
+      }
+    }
+
+    function validateInput(value) {
+      if (!value || value.trim().length === 0) {
+        return { valid: false, message: 'Inserisci un contenuto valido per il QR Code.' };
+      }
+      
+      if (value.length > 2000) {
+        return { valid: false, message: 'Il contenuto è troppo lungo (max 2000 caratteri).' };
+      }
+
+      const dangerousPatterns = [
+        /<script/i,
+        /javascript:/i,
+        /on\w+\s*=/i
+      ];
+
+      for (const pattern of dangerousPatterns) {
+        if (pattern.test(value)) {
+          return { valid: false, message: 'Il contenuto contiene pattern non consentiti.' };
+        }
+      }
+
+      return { valid: true };
+    }
+
+    function generateQRCode() {
+      const value = elements.text.value.trim();
+      const validation = validateInput(value);
+
+      if (!validation.valid) {
+        showAlert('error', validation.message);
+        return;
+      }
+
+      const sanitizedValue = sanitizeInput(value);
+
+      elements.generateBtn.classList.add('loading');
+      elements.generateBtn.disabled = true;
+
+      try {
+        const ctx = elements.canvas.getContext('2d');
+        ctx.clearRect(0, 0, elements.canvas.width, elements.canvas.height);
+
+        const options = {
+          text: sanitizedValue,
+          width: parseInt(elements.size.value),
+          height: parseInt(elements.size.value),
+          colorDark: elements.colorDark.value,
+          colorLight: elements.colorLight.value,
+          correctLevel: QRCode.CorrectLevel[elements.errorLevel.value]
+        };
+
+        const qr = new QRCode(document.createElement('div'), options);
+        const qrCanvas = qr._el.querySelector('canvas');
+        
+        elements.canvas.width = options.width;
+        elements.canvas.height = options.height;
+        ctx.drawImage(qrCanvas, 0, 0, options.width, options.height);
+
+        currentQRData = {
+          value: sanitizedValue,
+          dataURL: elements.canvas.toDataURL('image/png'),
+          options: options
+        };
+
+        elements.placeholder.style.display = 'none';
+        elements.canvas.style.display = 'block';
+        elements.qrContainer.classList.add('has-qr');
+        elements.downloadGroup.style.display = 'flex';
+        elements.resetBtn.style.display = 'inline-flex';
+        elements.downloadPNG.href = currentQRData.dataURL;
+
+        showAlert('success');
+      } catch (error) {
+        console.error('Errore durante la generazione:', error);
+        showAlert('error', 'Si è verificato un errore durante la generazione del QR Code.');
+      } finally {
+        elements.generateBtn.classList.remove('loading');
+        elements.generateBtn.disabled = false;
+      }
+    }
+
+    function resetQRCode() {
+      elements.canvas.style.display = 'none';
+      elements.placeholder.style.display = 'block';
+      elements.qrContainer.classList.remove('has-qr');
+      elements.downloadGroup.style.display = 'none';
+      elements.resetBtn.style.display = 'none';
+      elements.text.value = '';
+      currentQRData = null;
+      updateCharCounter();
+      elements.text.focus();
+    }
+
+    async function downloadSVG() {
+      if (!currentQRData) return;
+
+      try {
+        const size = currentQRData.options.width;
+        const imgData = elements.canvas.toDataURL('image/png');
+        const svg = `<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="${size}" height="${size}" viewBox="0 0 ${size} ${size}"><image width="${size}" height="${size}" xlink:href="${imgData}"/></svg>`;
+
+        const blob = new Blob([svg], { type: 'image/svg+xml' });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = 'qrcode.svg';
+        a.click();
+        URL.revokeObjectURL(url);
+        
+        showAlert('success');
+      } catch (error) {
+        console.error('Errore durante il download SVG:', error);
+        showAlert('error', 'Errore durante il download del file SVG.');
+      }
+    }
+
+    async function copyImageToClipboard() {
+      if (!currentQRData) return;
+
+      try {
+        const blob = await new Promise(resolve => 
+          elements.canvas.toBlob(resolve, 'image/png')
+        );
+        
+        await navigator.clipboard.write([
+          new ClipboardItem({ 'image/png': blob })
+        ]);
+        
+        const originalText = elements.copyImage.innerHTML;
+        elements.copyImage.innerHTML = '<i class="fa-solid fa-check"></i> Copiato!';
+        setTimeout(() => {
+          elements.copyImage.innerHTML = originalText;
+        }, 2000);
+      } catch (error) {
+        console.error('Errore durante la copia:', error);
+        showAlert('error', 'Impossibile copiare l\'immagine. Usa il pulsante di download.');
+      }
+    }
+
+    function openModal(modalElement) {
+      modalElement.classList.add('show');
+      document.body.style.overflow = 'hidden';
+    }
+
+    function closeModal(modalElement) {
+      modalElement.classList.remove('show');
+      document.body.style.overflow = '';
+    }
+
+    // Event Listeners
+    elements.generateBtn.addEventListener('click', generateQRCode);
+    elements.resetBtn.addEventListener('click', resetQRCode);
+    elements.downloadSVG.addEventListener('click', downloadSVG);
+    elements.copyImage.addEventListener('click', copyImageToClipboard);
+    elements.text.addEventListener('input', updateCharCounter);
+
+    // Modal Error Level
+    elements.errorLevelInfo.addEventListener('click', () => openModal(elements.errorLevelModal));
+    elements.closeErrorModal.addEventListener('click', () => closeModal(elements.errorLevelModal));
+    elements.errorLevelModal.addEventListener('click', (e) => {
+      if (e.target === elements.errorLevelModal) closeModal(elements.errorLevelModal);
+    });
+
+    // Modal Size
+    elements.sizeInfo.addEventListener('click', () => openModal(elements.sizeModal));
+    elements.closeSizeModal.addEventListener('click', () => closeModal(elements.sizeModal));
+    elements.sizeModal.addEventListener('click', (e) => {
+      if (e.target === elements.sizeModal) closeModal(elements.sizeModal);
+    });
+
+    // Chiudi modal con ESC
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape') {
+        if (elements.errorLevelModal.classList.contains('show')) {
+          closeModal(elements.errorLevelModal);
+        }
+        if (elements.sizeModal.classList.contains('show')) {
+          closeModal(elements.sizeModal);
+        }
+      }
+    });
+
+    // Genera al premere Invio
+    elements.text.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter' && !e.shiftKey) {
+        e.preventDefault();
+        generateQRCode();
+      }
+    });
+
+    // Inizializzazione
+    updateCharCounter();
+    elements.text.focus();
+
+    window.addEventListener('error', (e) => {
+      console.error('Errore catturato:', e.error);
+    });
+  </script>
+</body>
+</html>
